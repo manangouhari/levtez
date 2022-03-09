@@ -23,32 +23,32 @@ function Preview({ previewData, execute, isExecuting, close }) {
           <Text>
             XTZ Added to Collateral:{" "}
             <Text fontWeight={"bold"} as="span">
-              {previewData.collateralToAdd.div(1e6).toNumber().toFixed(2)} $XTZ
+              {previewData.collateralToAdd.div(1e6).toNumber().toFixed(2)} XTZ
             </Text>
           </Text>
           <Text>
             Platform Fee:{" "}
             <Text fontWeight={"bold"} as="span">
-              {previewData.fee.div(1e6).toNumber().toFixed(2)} $XTZ
+              {previewData.fee.div(1e6).toNumber().toFixed(2)} XTZ
             </Text>
           </Text>
           <Text>
             kUSD borrowed:{" "}
             <Text fontWeight={"bold"} as="span">
-              {previewData.kusdToBorrow.div(1e18).toNumber().toFixed(2)} $kUSD
+              {previewData.kusdToBorrow.div(1e18).toNumber().toFixed(2)} kUSD
             </Text>
           </Text>
           <Text>
             XTZ received from selling kUSD:{" "}
             <Text fontWeight={"bold"} as="span">
-              {previewData.swappedXTZ.div(1e6).toNumber().toFixed(2)} $XTZ
+              {previewData.swappedXTZ.div(1e6).toNumber().toFixed(2)} XTZ
             </Text>
           </Text>
           <Text>
             Total XTZ added to collateral:{" "}
             <Text fontWeight={"bold"} as="span">
               {previewData.totalCollateralToAdd.div(1e6).toNumber().toFixed(2)}{" "}
-              $XTZ
+              XTZ
             </Text>
           </Text>
           <Text>
@@ -63,13 +63,13 @@ function Preview({ previewData, execute, isExecuting, close }) {
           <Text>
             Total Collateral:{" "}
             <Text fontWeight={"bold"} as="span">
-              {previewData.totalCollateral.div(1e6).toNumber().toFixed(2)} $XTZ
+              {previewData.totalCollateral.div(1e6).toNumber().toFixed(2)} XTZ
             </Text>
           </Text>
           <Text>
             Total kUSD borrowed:{" "}
             <Text fontWeight={"bold"} as="span">
-              {previewData.totalBorrowed.div(1e18).toNumber().toFixed(2)} $kUSD
+              {previewData.totalBorrowed.div(1e18).toNumber().toFixed(2)} kUSD
             </Text>
           </Text>
         </Box>

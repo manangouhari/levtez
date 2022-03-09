@@ -73,14 +73,14 @@ function Oven({ address, data }) {
         <Stat p={2} boxShadow="xs">
           <StatLabel>Collateral</StatLabel>
           <Skeleton isLoaded={allGood}>
-            <StatNumber>{collateral.toFixed(2)} $XTZ</StatNumber>
+            <StatNumber>{collateral.toFixed(2)} XTZ</StatNumber>
             <StatHelpText>${collateralUSD.toFixed(2)}</StatHelpText>
           </Skeleton>
         </Stat>
         <Stat p={2} boxShadow="xs">
           <StatLabel>Debt</StatLabel>
           <Skeleton isLoaded={allGood}>
-            <StatNumber>{borrowed.toFixed(2)} $kUSD</StatNumber>
+            <StatNumber>{borrowed.toFixed(2)} kUSD</StatNumber>
             <StatHelpText>${borrowedUSD.toFixed(2)}</StatHelpText>
           </Skeleton>
         </Stat>
@@ -88,7 +88,7 @@ function Oven({ address, data }) {
           <StatLabel>Collateralisation Ratio</StatLabel>
           <Skeleton isLoaded={allGood}>
             <StatNumber>{ratio.toFixed(2)}%</StatNumber>
-            <StatHelpText>Target: 200%</StatHelpText>
+            <StatHelpText>Safe above: 200%</StatHelpText>
           </Skeleton>
         </Stat>
         <Stat p={2} boxShadow="xs">
