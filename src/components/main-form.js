@@ -77,6 +77,9 @@ function MainForm({
       >
         Preview Leverage
       </Button>
+      <Text fontSize={"sm"} color="gray.700" mt={1}>
+        * 1% of XTZ being added as collateral is charged as platform fee.
+      </Text>
     </Box>
   );
 }

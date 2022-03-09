@@ -27,6 +27,12 @@ function Preview({ previewData, execute, isExecuting, close }) {
             </Text>
           </Text>
           <Text>
+            Platform Fee:{" "}
+            <Text fontWeight={"bold"} as="span">
+              {previewData.fee.div(1e6).toNumber().toFixed(2)} $XTZ
+            </Text>
+          </Text>
+          <Text>
             kUSD borrowed:{" "}
             <Text fontWeight={"bold"} as="span">
               {previewData.kusdToBorrow.div(1e18).toNumber().toFixed(2)} $kUSD
