@@ -51,15 +51,15 @@ export async function executeLeverage(
   targetOven,
   xtzCollateral,
   kusdBorrow,
-  teztimate
+  teztimate,
+  fee,
+  address
 ) {
-  console.log("Executing...");
   const transactions = [];
   const oven = await tezos.wallet.at(targetOven);
   const token = await tezos.wallet.at(constants.KOLIBRI.Token);
   const dex = await tezos.wallet.at(constants.KOLIBRI.QuipuDEX);
 
-  console.log("Collateral Add TX");
   transactions.push({
     kind: OpKind.TRANSACTION,
     ...oven.methods
@@ -67,13 +67,11 @@ export async function executeLeverage(
       .toTransferParams({ amount: xtzCollateral.toString(), mutez: true }),
   });
 
-  console.log("Borrow kUSD TX");
   transactions.push({
     kind: OpKind.TRANSACTION,
     ...oven.methods.borrow(kusdBorrow.toString()).toTransferParams(),
   });
 
-  console.log("Approve kUSD TX");
   transactions.push({
     kind: OpKind.TRANSACTION,
     ...token.methods
@@ -81,7 +79,6 @@ export async function executeLeverage(
       .toTransferParams(),
   });
 
-  console.log("Convert kUSD to TEZ TX");
   transactions.push({
     kind: OpKind.TRANSACTION,
     ...dex.methods
@@ -93,8 +90,14 @@ export async function executeLeverage(
       .toTransferParams(),
   });
 
+  transactions.push({
+    kind: OpKind.TRANSACTION,
+    to: constants.FEE_VAULT,
+    amount: fee,
+    mutez: true,
+  });
+
   try {
-    console.log(transactions);
     console.log("Preparing batch.");
     const batch = tezos.wallet.batch(transactions);
     const op = await batch.send();

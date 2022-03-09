@@ -69,7 +69,6 @@ function App() {
     if (address) tezos.tz.getBalance(address).then((bal) => setTEZBalance(bal));
     if (current === STATES.LOAD_OVENS) {
       fetchAllOvensOfAddress(address).then((ovensFound) => {
-        console.log(ovensFound);
         setOvens(ovensFound);
         if (ovensFound.length === 0) {
           setCurrent(STATES.NO_OVEN);
@@ -87,9 +86,7 @@ function App() {
   }, [current, tezos, address, walletConnected]);
 
   useEffect(() => {
-    console.log("Selected Oven:", selectedOven);
     if (!!selectedOven) {
-      console.log("Load Oven Data");
       loadOvenData(tezos, selectedOven).then(setOvenData);
     }
   }, [selectedOven, tezos]);
@@ -99,7 +96,6 @@ function App() {
 
     const activeAccount = await wallet.client.getActiveAccount();
     if (activeAccount) {
-      console.log(activeAccount.address);
       walletAddress = activeAccount.address;
     } else {
       const permissions = await wallet.client.requestPermissions();
@@ -134,6 +130,10 @@ function App() {
       let data = {};
       data["collateralToAdd"] = new BigNumber(collateralToAdd).times(1e6);
       data["kusdToBorrow"] = new BigNumber(kusdToBorrow).times(1e18);
+
+      data["fee"] = data["collateralToAdd"].div(100);
+      data["collateralToAdd"] = data["collateralToAdd"].minus(data["fee"]);
+
       if (data["kusdToBorrow"].eq(0)) {
         data["swappedXTZ"] = new BigNumber(0);
         data["totalCollateralToAdd"] = data["collateralToAdd"];
@@ -142,7 +142,7 @@ function App() {
           data["totalCollateralToAdd"]
         );
         data["totalBorrowed"] = ovenData.borrowed;
-        console.log(data);
+
         setPreviewData(data);
         setOpenPreview(true);
         setShowPreview(false);
@@ -161,7 +161,7 @@ function App() {
             data["totalCollateralToAdd"]
           );
           data["totalBorrowed"] = ovenData.borrowed.plus(data["kusdToBorrow"]);
-          console.log(data);
+
           setPreviewData(data);
           setOpenPreview(true);
           setShowPreview(false);
@@ -203,9 +203,9 @@ function App() {
               previewData.collateralToAdd,
               previewData.kusdToBorrow,
               previewData.swappedXTZ,
+              previewData.fee,
               address
             ).then((res) => {
-              console.log("returned");
               setExecuting(false);
               setOpenPreview(false);
               setPreviewData({});

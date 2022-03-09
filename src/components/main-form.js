@@ -19,7 +19,6 @@ function MainForm({
   loadingPreview,
   allowPreview,
 }) {
-  console.log("Loading Preview", loadingPreview);
   return (
     <Box
       mt={5}

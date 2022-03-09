@@ -2,7 +2,6 @@ import React from "react";
 import { Flex, Box, Text, Button, CloseButton } from "@chakra-ui/react";
 
 function Preview({ previewData, execute, isExecuting, close }) {
-  console.log(!!previewData);
   return (
     <Flex
       position={"absolute"}
