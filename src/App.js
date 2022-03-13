@@ -207,10 +207,8 @@ function App() {
   }, [collateralToAdd, kusdToBorrow, tezBalance]);
 
   useEffect(() => {
-    setIsPreviewAllowed(
-      computeIsPreviewAllowed(collateralToAdd, kusdToBorrow, tezBalance)
-    );
-  }, [collateralToAdd, kusdToBorrow, tezBalance, computeIsPreviewAllowed]);
+    setIsPreviewAllowed(computeIsPreviewAllowed());
+  }, [computeIsPreviewAllowed]);
 
   return (
     <Box minW="100vw" minH="100vh">
