@@ -12,7 +12,7 @@ function Preview({ previewData, execute, isExecuting, close }) {
       alignItems={"center"}
       zIndex={"100"}
     >
-      <Box bg="white" p={8} borderRadius="sm" minW="md">
+      <Box bg="white" p={8} borderRadius="sm" w="md">
         <Flex justifyContent={"space-between"} alignItems={"center"}>
           <Text fontSize="xl" fontWeight={"bold"}>
             Preview
@@ -73,16 +73,55 @@ function Preview({ previewData, execute, isExecuting, close }) {
             </Text>
           </Text>
         </Box>
+        <hr />
+        <Box py={4}>
+          <Text>
+            Coll. Ratio:{" "}
+            <Text
+              fontWeight={"bold"}
+              as="span"
+              color={
+                previewData.collRatio > 300
+                  ? "green.600"
+                  : previewData.collRatio > 200
+                  ? "yellow.600"
+                  : "red.600"
+              }
+            >
+              {previewData.collRatio.toFixed(2)}%
+            </Text>
+          </Text>
+          <Text>
+            Coll. Utilization:{" "}
+            <Text
+              fontWeight={"bold"}
+              as="span"
+              color={
+                previewData.collUtilization <= 50
+                  ? "green.600"
+                  : previewData.collUtilization <= 70
+                  ? "yellow.600"
+                  : "red.600"
+              }
+            >
+              {previewData.collUtilization.toFixed(2)}%
+            </Text>
+          </Text>
+        </Box>
         <Button
           mt={4}
           w="full"
-          colorScheme={"blue"}
+          colorScheme={previewData.collRatio >= 200 ? "blue" : "red"}
+          disabled={previewData.collRatio < 200}
           onClick={execute}
           isLoading={isExecuting}
           loadingText={"Preparing Leverage"}
         >
           Execute 🚀
         </Button>
+        <Text color="red.600" fontSize={"sm"} mt={1} fontWeight={"bold"}>
+          Collateralisation Ratio needs to be above 200%.
+        </Text>
       </Box>
     </Flex>
   );
