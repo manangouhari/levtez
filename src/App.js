@@ -1,4 +1,4 @@
-import React, { useState, useEffect, useContext } from "react";
+import React, { useState, useEffect, useContext, useCallback } from "react";
 
 import {
   Box,
@@ -134,39 +134,58 @@ function App() {
       data["fee"] = data["collateralToAdd"].div(100);
       data["collateralToAdd"] = data["collateralToAdd"].minus(data["fee"]);
 
-      if (data["kusdToBorrow"].eq(0)) {
-        data["swappedXTZ"] = new BigNumber(0);
-        data["totalCollateralToAdd"] = data["collateralToAdd"];
-        data["leverage"] = new BigNumber(1);
+      estimateKUSDtoTEZ(tezos, data["kusdToBorrow"]).then((teztimate) => {
+        data["swappedXTZ"] = withSlippage(teztimate, 1);
+        data["totalCollateralToAdd"] = data["collateralToAdd"].plus(
+          data["swappedXTZ"]
+        );
+        // TODO
+        data["leverage"] = data["totalCollateralToAdd"].div(
+          data["collateralToAdd"]
+        );
+
         data["totalCollateral"] = ovenData.collateral.plus(
           data["totalCollateralToAdd"]
         );
-        data["totalBorrowed"] = ovenData.borrowed;
+        data["totalBorrowed"] = ovenData.borrowed.plus(data["kusdToBorrow"]);
 
+        data["collateralUSD"] = data["totalCollateral"]
+          .div(1e6)
+          .times(ovenData.usd.tez);
+        data["borrowedUSD"] = data["totalBorrowed"]
+          .div(1e18)
+          .times(ovenData.usd.kusd);
+        data["collRatio"] = data["collateralUSD"]
+          .div(data["borrowedUSD"])
+          .times(100)
+          .toNumber()
+          ? data["collateralUSD"].div(data["borrowedUSD"]).times(100).toNumber()
+          : 0;
+
+        data["collUtilization"] = data["borrowedUSD"]
+          .div(data["collateralUSD"].div(2))
+          .times(100)
+          .toNumber()
+          ? data["borrowedUSD"]
+              .div(data["collateralUSD"].div(2))
+              .times(100)
+              .toNumber()
+          : 0;
+
+        data["liqPrice"] = data["borrowedUSD"]
+          .times(2)
+          .div(data["totalCollateral"].div(1e6))
+          .toNumber()
+          ? data["borrowedUSD"]
+              .times(2)
+              .div(data["totalCollateral"].div(1e6))
+              .toNumber()
+          : 0;
+        console.log(data["liqPrice"].toString());
         setPreviewData(data);
         setOpenPreview(true);
         setShowPreview(false);
-      } else {
-        estimateKUSDtoTEZ(tezos, data["kusdToBorrow"]).then((teztimate) => {
-          data["swappedXTZ"] = withSlippage(teztimate, 1);
-          data["totalCollateralToAdd"] = data["collateralToAdd"].plus(
-            data["swappedXTZ"]
-          );
-          // TODO
-          data["leverage"] = data["totalCollateralToAdd"].div(
-            data["collateralToAdd"]
-          );
-
-          data["totalCollateral"] = ovenData.collateral.plus(
-            data["totalCollateralToAdd"]
-          );
-          data["totalBorrowed"] = ovenData.borrowed.plus(data["kusdToBorrow"]);
-
-          setPreviewData(data);
-          setOpenPreview(true);
-          setShowPreview(false);
-        });
-      }
+      });
     }
   }, [
     showPreview,
@@ -175,20 +194,23 @@ function App() {
     tezos,
     ovenData?.collateral,
     ovenData?.borrowed,
+    ovenData?.usd?.tez,
+    ovenData?.usd?.kusd,
   ]);
 
-  function computeIsPreviewAllowed(collateralToAdd, kusdToBorrow, tezBalance) {
+  const computeIsPreviewAllowed = useCallback(() => {
     if (!collateralToAdd || !kusdToBorrow) return false;
     if (!tezBalance) return false;
     if (new BigNumber(collateralToAdd).times(1e6).gte(tezBalance)) return false;
+
     return true;
-  }
+  }, [collateralToAdd, kusdToBorrow, tezBalance]);
 
   useEffect(() => {
     setIsPreviewAllowed(
       computeIsPreviewAllowed(collateralToAdd, kusdToBorrow, tezBalance)
     );
-  }, [collateralToAdd, kusdToBorrow, tezBalance]);
+  }, [collateralToAdd, kusdToBorrow, tezBalance, computeIsPreviewAllowed]);
 
   return (
     <Box minW="100vw" minH="100vh">

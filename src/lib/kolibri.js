@@ -1,4 +1,5 @@
 import { OpKind } from "@taquito/taquito";
+import { BigNumber } from "bignumber.js";
 
 import constants from "./constants";
 import { fetchTezPrice, fetchKUSDPrice } from "./utils";
@@ -34,6 +35,7 @@ export async function loadOvenData(tezos, oven) {
 }
 
 export async function estimateKUSDtoTEZ(tezos, kUSDAmount) {
+  if (kUSDAmount.eq(0)) return new BigNumber(0);
   const kolibriDEX = await tezos.wallet.at(constants.KOLIBRI.QuipuDEX);
   const dexStorage = await kolibriDEX.storage();
 
