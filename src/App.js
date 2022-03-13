@@ -211,7 +211,7 @@ function App() {
   }, [computeIsPreviewAllowed]);
 
   return (
-    <Box minW="100vw" minH="100vh">
+    <Flex minW="100vw" minH="100vh" flexDir={"column"}>
       {openPreview && previewData && (
         <Preview
           previewData={previewData}
@@ -246,7 +246,7 @@ function App() {
         address={address}
         tezBalance={tezBalance}
       />
-      <Box px={8} py={12} overflow="hidden" h="100%">
+      <Box px={8} py={12} overflow="hidden" h="100%" flexGrow={"1"}>
         {current === STATES.NOT_CONNECTED && (
           <Flex justifyContent={"center"} alignItems={"center"}>
             <Box textAlign={"center"} maxW="container.md" py={36}>
@@ -343,7 +343,26 @@ function App() {
           </>
         )}
       </Box>
-    </Box>
+      <Box px={8} py={4} borderTop={"1px"} borderColor="gray.200">
+        Reach out on{" "}
+        <Link
+          href="https://twitter.com/manangouhari"
+          isExternal
+          color="blue.600"
+        >
+          twitter
+        </Link>{" "}
+        at{" "}
+        <Link
+          href="https://twitter.com/manangouhari"
+          isExternal
+          color="blue.600"
+        >
+          @manangouhari
+        </Link>{" "}
+        for any feedback, questions, or suggestions.
+      </Box>
+    </Flex>
   );
 }
 
