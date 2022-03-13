@@ -119,9 +119,11 @@ function Preview({ previewData, execute, isExecuting, close }) {
         >
           Execute 🚀
         </Button>
-        <Text color="red.600" fontSize={"sm"} mt={1} fontWeight={"bold"}>
-          Collateralisation Ratio needs to be above 200%.
-        </Text>
+        {previewData.collRatio < 200 && (
+          <Text color="red.600" fontSize={"sm"} mt={1} fontWeight={"bold"}>
+            Collateralisation Ratio needs to be above 200%.
+          </Text>
+        )}
       </Box>
     </Flex>
   );
