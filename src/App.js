@@ -345,20 +345,12 @@ function App() {
       </Box>
       <Box px={8} py={4} borderTop={"1px"} borderColor="gray.200">
         Reach out on{" "}
-        <Link
-          href="https://twitter.com/manangouhari"
-          isExternal
-          color="blue.600"
-        >
+        <Link href="https://twitter.com/levtez" isExternal color="blue.600">
           twitter
         </Link>{" "}
         at{" "}
-        <Link
-          href="https://twitter.com/manangouhari"
-          isExternal
-          color="blue.600"
-        >
-          @manangouhari
+        <Link href="https://twitter.com/levtez" isExternal color="blue.600">
+          @levtez
         </Link>{" "}
         for any feedback, questions, or suggestions.
       </Box>
